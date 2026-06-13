@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proyek - Cicada Organization</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0a0e27;
+            --secondary: #1a1f3a;
+            --accent: #00d4ff;
+            --accent-alt: #ff006e;
+            --text: #e0e0e0;
+            --text-dark: #a0a0a0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--primary);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(10, 14, 39, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(0, 212, 255, 0.1);
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, var(--accent), var(--accent-alt));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        .nav-links a.active {
+            color: var(--accent);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: var(--accent);
+            margin: 5px 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-top: 100px;
+            margin-bottom: 3rem;
+        }
+
+        .page-header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--accent), var(--accent-alt));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .project-filters {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 0.75rem 1.5rem;
+            background: transparent;
+            color: var(--accent);
+            border: 1px solid var(--accent);
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: var(--accent);
+            color: var(--primary);
+        }
+
+        .projects-timeline {
+            position: relative;
+            padding: 2rem 0;
+        }
+
+        .projects-timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--accent), rgba(0, 212, 255, 0));
+        }
+
+        .project-item {
+            margin-bottom: 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: stretch;
+            gap: 2rem;
+        }
+
+        .project-item:nth-child(odd) {
+            flex-direction: row-reverse;
+        }
+
+        .project-item:nth-child(odd) .project-dot {
+            margin-left: auto;
+        }
+
+        .project-dot {
+            position: relative;
+            width: 40px;
+            min-width: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .project-dot::after {
+            content: '';
+            width: 40px;
+            height: 40px;
+            background: var(--primary);
+            border: 3px solid var(--accent);
+            border-radius: 50%;
+            position: absolute;
+        }
+
+        .project-card {
+            flex: 1;
+            background: var(--secondary);
+            padding: 2rem;
+            border-radius: 10px;
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            transition: all 0.3s ease;
+            max-width: calc(50% - 1rem);
+        }
+
+        .project-card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 20px 40px rgba(0, 212, 255, 0.2);
+            transform: translateY(-10px);
+        }
+
+        .project-status {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .status-completed {
+            background: rgba(0, 212, 255, 0.2);
+            color: var(--accent);
+        }
+
+        .status-ongoing {
+            background: rgba(255, 0, 110, 0.2);
+            color: var(--accent-alt);
+        }
+
+        .status-upcoming {
+            background: rgba(255, 200, 0, 0.2);
+            color: #ffc800;
+        }
+
+        .project-card h3 {
+            color: var(--text);
+            margin-bottom: 0.5rem;
+            font-size: 1.3rem;
+        }
+
+        .project-date {
+            color: var(--text-dark);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .project-description {
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+            line-height: 1.8;
+        }
+
+        .project-tech {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+
+        .tech-tag {
+            background: rgba(0, 212, 255, 0.1);
+            color: var(--accent);
+            padding: 0.25rem 0.75rem;
+            border-radius: 5px;
+            font-size: 0.75rem;
+        }
+
+        .project-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(0, 212, 255, 0.1);
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            color: var(--accent);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .stat-label {
+            color: var(--text-dark);
+            font-size: 0.75rem;
+        }
+
+        footer {
+            background: var(--secondary);
+            padding: 3rem 2rem;
+            border-top: 1px solid rgba(0, 212, 255, 0.1);
+            margin-top: 3rem;
+            text-align: center;
+            color: var(--text-dark);
+        }
+
+        @media (max-width: 968px) {
+            .projects-timeline::before {
+                display: none;
+            }
+
+            .project-item {
+                flex-direction: column !important;
+            }
+
+            .project-card {
+                max-width: 100%;
+            }
+
+            .project-dot {
+                width: 100%;
+                margin: 0 !important;
+                margin-bottom: 1rem;
+            }
+
+            .project-dot::after {
+                position: static;
+                margin: 0 auto;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .page-header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <a href="../index.html" class="logo">🦗 CICADA</a>
+        <ul class="nav-links">
+            <li><a href="../index.html">Beranda</a></li>
+            <li><a href="about.html">Tentang</a></li>
+            <li><a href="service.html">Layanan</a></li>
+            <li><a href="blog.html">Berita</a></li>
+            <li><a href="tools.html">Tools</a></li>
+            <li><a href="guide.html">Panduan</a></li>
+            <li><a href="project.html" class="active">Proyek</a></li>
+            <li><a href="skill.html">Skill</a></li>
+            <li><a href="contact.html">Kontak</a></li>
+        </ul>
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>Portfolio Proyek</h1>
+            <p>Lihat proyek-proyek inovatif yang telah kami wujudkan</p>
+        </div>
+
+        <!-- Filters -->
+        <div class="project-filters">
+            <button class="filter-btn active" onclick="filterProjects('all')">Semua</button>
+            <button class="filter-btn" onclick="filterProjects('completed')">Selesai</button>
+            <button class="filter-btn" onclick="filterProjects('ongoing')">Berlangsung</button>
+            <button class="filter-btn" onclick="filterProjects('upcoming')">Mendatang</button>
+        </div>
+
+        <!-- Timeline Projects -->
+        <section class="projects-timeline" id="projectsTimeline">
+            <!-- Project 1 -->
+            <div class="project-item" data-status="completed">
+                <div class="project-card">
+                    <span class="project-status status-completed">✓ Selesai</span>
+                    <h3>TaskFlow Pro v1.0</h3>
+                    <div class="project-date">Januari - Maret 2024</div>
+                    <p class="project-description">
+                        Pengembangan aplikasi manajemen tugas dengan fitur kolaborasi real-time. Aplikasi ini telah digunakan oleh lebih dari 50,000 pengguna aktif.
+                    </p>
+                    <div class="project-tech">
+                        <span class="tech-tag">React</span>
+                        <span class="tech-tag">Node.js</span>
+                        <span class="tech-tag">MongoDB</span>
+                        <span class="tech-tag">WebSocket</span>
+                    </div>
+                    <div class="project-stats">
+                        <div class="stat">
+                            <div class="stat-number">6 bulan</div>
+                            <div class="stat-label">Durasi</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">12 orang</div>
+                            <div class="stat-label">Tim</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">$150K</div>
+                            <div class="stat-label">Budget</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-dot"></div>
+            </div>
+
+            <!-- Project 2 -->
+            <div class="project-item" data-status="completed">
+                <div class="project-card">
+                    <span class="project-status status-completed">✓ Selesai</span>
+                    <h3>CodeBase IDE</h3>
+                    <div class="project-date">April - Agustus 2024</div>
+                    <p class="project-description">
+                        IDE ringan dengan dukungan 50+ bahasa pemrograman. Telah didownload lebih dari 100,000 kali dengan rating 4.9 bintang.
+                    </p>
+                    <div class="project-tech">
+                        <span class="tech-tag">Electron</span>
+                        <span class="tech-tag">Python</span>
+                        <span class="tech-tag">Git API</span>
+                        <span class="tech-tag">Webpack</span>
+                    </div>
+                    <div class="project-stats">
+                        <div class="stat">
+                            <div class="stat-number">5 bulan</div>
+                            <div class="stat-label">Durasi</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">8 orang</div>
+                            <div class="stat-label">Tim</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">$120K</div>
+                            <div class="stat-label">Budget</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-dot"></div>
+            </div>
+
+            <!-- Project 3 -->
+            <div class="project-item" data-status="ongoing">
+                <div class="project-card">
+                    <span class="project-status status-ongoing">● Berlangsung</span>
+                    <h3>SecureVault Enterprise</h3>
+                    <div class="project-date">September 2024 - Desember 2024</div>
+                    <p class="project-description">
+                        Sistem manajemen password enterprise dengan enkripsi end-to-end dan audit trail lengkap. Sedang dalam fase pengembangan lanjutan.
+                    </p>
+                    <div class="project-tech">
+                        <span class="tech-tag">Java</span>
+                        <span class="tech-tag">Spring Boot</span>
+                        <span class="tech-tag">PostgreSQL</span>
+                        <span class="tech-tag">Docker</span>
+                    </div>
+                    <div class="project-stats">
+                        <div class="stat">
+                            <div class="stat-number">4 bulan</div>
+                            <div class="stat-label">Durasi</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">10 orang</div>
+                            <div class="stat-label">Tim</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">$180K</div>
+                            <div class="stat-label">Budget</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-dot"></div>
+            </div>
+
+            <!-- Project 4 -->
+            <div class="project-item" data-status="completed">
+                <div class="project-card">
+                    <span class="project-status status-completed">✓ Selesai</span>
+                    <h3>DataViz Studio</h3>
+                    <div class="project-date">Mei - Juli 2024</div>
+                    <p class="project-description">
+                        Platform visualisasi data interaktif dengan template custom. Tool ini membantu 40,000+ pengguna membuat dashboard profesional.
+                    </p>
+                    <div class="project-tech">
+                        <span class="tech-tag">Vue.js</span>
+                        <span class="tech-tag">D3.js</span>
+                        <span class="tech-tag">Flask</span>
+                        <span class="tech-tag">Redis</span>
+                    </div>
+                    <div class="project-stats">
+                        <div class="stat">
+                            <div class="stat-number">3 bulan</div>
+                            <div class="stat-label">Durasi</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">7 orang</div>
+                            <div class="stat-label">Tim</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">$100K</div>
+                            <div class="stat-label">Budget</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-dot"></div>
+            </div>
+
+            <!-- Project 5 -->
+            <div class="project-item" data-status="ongoing">
+                <div class="project-card">
+                    <span class="project-status status-ongoing">● Berlangsung</span>
+                    <h3>AI Analytics Platform</h3>
+                    <div class="project-date">Oktober 2024 - Januari 2025</div>
+                    <p class="project-description">
+                        Platform analytics berbasis AI dengan machine learning untuk prediksi bisnis. Sedang dalam tahap beta testing dengan klien enterprise.
+                    </p>
+                    <div class="project-tech">
+                        <span class="tech-tag">Python</span>
+                        <span class="tech-tag">TensorFlow</span>
+                        <span class="tech-tag">FastAPI</span>
+                        <span class="tech-tag">Kubernetes</span>
+                    </div>
+                    <div class="project-stats">
+                        <div class="stat">
+                            <div class="stat-number">4 bulan</div>
+                            <div class="stat-label">Durasi</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">15 orang</div>
+                            <div class="stat-label">Tim</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">$250K</div>
+                            <div class="stat-label">Budget</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-dot"></div>
+            </div>
+
+            <!-- Project 6 -->
+            <div class="project-item" data-status="upcoming">
+                <div class="project-card">
+                    <span class="project-status status-upcoming">⧖ Mendatang</span>
+                    <h3>Mobile App Suite</h3>
+                    <div class="project-date">Februari 2025 - Mei 2025</div>
+                    <p class="project-description">
+                        Suite aplikasi mobile multi-platform untuk iOS dan Android dengan sinkronisasi cloud real-time. Akan diluncurkan Q2 2025.
+                    </p>
+                    <div class="project-tech">
+                        <span class="tech-tag">Flutter</span>
+                        <span class="tech-tag">Firebase</span>
+                        <span class="tech-tag">Dart</span>
+                        <span class="tech-tag">CI/CD</span>
+                    </div>
+                    <div class="project-stats">
+                        <div class="stat">
+                            <div class="stat-number">4 bulan</div>
+                            <div class="stat-label">Durasi</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">12 orang</div>
+                            <div class="stat-label">Tim</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">$200K</div>
+                            <div class="stat-label">Budget</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-dot"></div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Cicada Organization. All rights reserved.</p>
+    </footer>
+
+    <script>
+        function filterProjects(status) {
+            const items = document.querySelectorAll('.project-item');
+            const buttons = document.querySelectorAll('.filter-btn');
+
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            items.forEach(item => {
+                if (status === 'all' || item.dataset.status === status) {
+                    item.style.display = '';
+                    setTimeout(() => item.style.opacity = '1', 0);
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        document.querySelector('.hamburger').addEventListener('click', function() {
+            const nav = document.querySelector('.nav-links');
+            nav.style.display = nav.style.display === 'flex' ? 'none' : 'flex';
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skill Anggota - Cicada Organization</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0a0e27;
+            --secondary: #1a1f3a;
+            --accent: #00d4ff;
+            --accent-alt: #ff006e;
+            --text: #e0e0e0;
+            --text-dark: #a0a0a0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--primary);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(10, 14, 39, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(0, 212, 255, 0.1);
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, var(--accent), var(--accent-alt));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        .nav-links a.active {
+            color: var(--accent);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: var(--accent);
+            margin: 5px 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-top: 100px;
+            margin-bottom: 3rem;
+        }
+
+        .page-header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--accent), var(--accent-alt));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .member-card {
+            background: var(--secondary);
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .member-card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 20px 40px rgba(0, 212, 255, 0.2);
+            transform: translateY(-10px);
+        }
+
+        .member-header {
+            padding: 2rem 1.5rem;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(255, 0, 110, 0.1));
+            border-bottom: 1px solid rgba(0, 212, 255, 0.2);
+            text-align: center;
+        }
+
+        .member-avatar {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .member-name {
+            color: var(--accent);
+            font-size: 1.2rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .member-role {
+            color: var(--text-dark);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .member-body {
+            padding: 1.5rem;
+        }
+
+        .skill-category {
+            margin-bottom: 1.5rem;
+        }
+
+        .category-title {
+            color: var(--accent);
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .category-title::before {
+            content: '';
+            width: 3px;
+            height: 12px;
+            background: var(--accent);
+            border-radius: 2px;
+        }
+
+        .skills-list {
+            list-style: none;
+        }
+
+        .skill-item {
+            margin-bottom: 0.75rem;
+        }
+
+        .skill-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.3rem;
+        }
+
+        .skill-name {
+            color: var(--text);
+            font-size: 0.9rem;
+        }
+
+        .skill-level {
+            color: var(--accent);
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .skill-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(0, 212, 255, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .skill-progress {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), var(--accent-alt));
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(0, 212, 255, 0.1);
+        }
+
+        .social-link {
+            width: 35px;
+            height: 35px;
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent);
+            text-decoration: none;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .social-link:hover {
+            background: var(--accent);
+            color: var(--primary);
+        }
+
+        .skill-summary {
+            background: var(--secondary);
+            padding: 2rem;
+            border-radius: 10px;
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            margin-bottom: 3rem;
+        }
+
+        .skill-summary h2 {
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            text-align: center;
+            font-size: 1.8rem;
+        }
+
+        .skills-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+
+        .skill-overview-item {
+            text-align: center;
+        }
+
+        .skill-count {
+            font-size: 2rem;
+            color: var(--accent);
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .skill-type {
+            color: var(--text-dark);
+            font-size: 0.9rem;
+        }
+
+        footer {
+            background: var(--secondary);
+            padding: 3rem 2rem;
+            border-top: 1px solid rgba(0, 212, 255, 0.1);
+            margin-top: 3rem;
+            text-align: center;
+            color: var(--text-dark);
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .page-header h1 {
+                font-size: 2rem;
+            }
+
+            .skills-overview {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <a href="../index.html" class="logo">🦗 CICADA</a>
+        <ul class="nav-links">
+            <li><a href="../index.html">Beranda</a></li>
+            <li><a href="about.html">Tentang</a></li>
+            <li><a href="service.html">Layanan</a></li>
+            <li><a href="blog.html">Berita</a></li>
+            <li><a href="tools.html">Tools</a></li>
+            <li><a href="guide.html">Panduan</a></li>
+            <li><a href="project.html">Proyek</a></li>
+            <li><a href="skill.html" class="active">Skill</a></li>
+            <li><a href="contact.html">Kontak</a></li>
+        </ul>
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>Skill Anggota Tim</h1>
+            <p>Keahlian dan kompetensi tim Cicada Organization</p>
+        </div>
+
+        <!-- Skills Summary -->
+        <section class="skill-summary">
+            <h2>📊 Ringkasan Keahlian Tim</h2>
+            <div class="skills-overview">
+                <div class="skill-overview-item">
+                    <div class="skill-count">45+</div>
+                    <div class="skill-type">Teknologi</div>
+                </div>
+                <div class="skill-overview-item">
+                    <div class="skill-count">12</div>
+                    <div class="skill-type">Anggota Tim</div>
+                </div>
+                <div class="skill-overview-item">
+                    <div class="skill-count">8</div>
+                    <div class="skill-type">Sertifikasi</div>
+                </div>
+                <div class="skill-overview-item">
+                    <div class="skill-count">150+</div>
+                    <div class="skill-type">Jam Pelatihan</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Team Members -->
+        <section class="team-grid">
+            <!-- Member 1 -->
+            <div class="member-card">
+                <div class="member-header">
+                    <div class="member-avatar">👨‍💼</div>
+                    <div class="member-name">Ricky Pratama</div>
+                    <div class="member-role">Tech Lead & Full Stack Developer</div>
+                </div>
+                <div class="member-body">
+                    <div class="skill-category">
+                        <div class="category-title">Backend</div>
+                        <ul class="skills-list">
+                            <li class="skill-item">
+                                <div class="skill-header">
+                                    <span class="skill-name">Node.js</span>
+                                    <span class="skill-level">Expert</span>
+                                </div>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" style="width: 95%"></div>
+                                </div>
+                            </li>
+                            <li class="skill-item">
+                                <div class="skill-header">
+                                    <span class="skill-name">Python</span>
+                                    <span class="skill-level">Advanced</span>
+                                </div>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" style="width: 90%"></div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="skill-category">
+                        <div class="category-title">Database</div>
+                        <ul class="skills-list">
+                            <li class="skill-item">
+                                <div class="skill-header">
+                                    <span class="skill-name">MongoDB</span>
+                                    <span class="skill-level">Advanced</span>
+                                </div>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" style="width: 85%"></div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="social-links">
+                        <a href="#" class="social-link">💼</a>
+                        <a href="#" class="social-link">🐙</a>
+                        <a href="#" class="social-link">🔗</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Member 2 -->
+            <div class="member-card">
+                <div class="member-header">
+                    <div class="member-avatar">👩‍💻</div>
+                    <div class="member-name">Sarah Dewi</div>
+                    <div class="member-role">Frontend Developer & UI Designer</div>
+                </div>
+                <div class="member-body">
+                    <div class="skill-category">
+                        <div class="category-title">Frontend</div>
+                        <ul class="skills-list">
+                            <li class="skill-item">
+                                <div class="skill-header">
+                                    <span class="skill-name">React.js</span>
+                                    <span class="skill-level">Expert</span>
+                                </div>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" style="width: 95%"></div>
+                                </div>
+                            </li>
+                            <li class="skill-item">
+                                <div class="skill-header">
+                                    <span class="skill-name">Vue.js</span>
+                                    <span class="skill-level">Advanced</span>
+                                </div>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" style="width: 88%"></div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="skill-category">
+                        <div class="category-title">Design</div>
+                        <ul class="skills-list">
+                            <li class="skill-item">
+                                <div class="skill-header">
+                                    <span class="skill-name">Figma</span>
+                                    <span class="skill-level">Expert</span>
+                                </div>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" style="width: 92%"></div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="social-links">
+                        <a href="#" class="social-link">💼</a>
+                        <a href="#" class="social-link">🐙</a>
+                        <a href="#" class="social-link">🔗</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Member 3 -->
+            <div class="member-card">
+                <div class="member-header">
+                    <div class="member-avatar">👨‍🔬</div>
+                    <div class="member-name">Ahmad Rizki</div>
+                    <div class="member-role">Data Scientist & AI Engineer</div>
+                </div>
+                <div class="member-body">
+                    <div class="skill-category">
+                        <div class="category-title">AI/ML</div>
+                        <ul class="skills-list">
+                            <li class="skill-item">
+                                <div class="skill-header">
+                                    <span class="skill-name">TensorFlow</span>
+                                    <span class="skill-level">Advanced</span>
+                                </div>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" style="width: 88%"></div>
+                                </div>
+                            </li>
+                            <li class="skill-item">
+                                <div class="skill-header">
+                                    <span class="skill-name">PyTorch</span>
+                                    <span class="skill-level">Advanced</span>
+                                </div>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" style="width: 85%"></div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="skill-category">
+                        <div class="category-title">Data</div>
+                        <ul class="skills-list">
+                            <li class="skill-item">
+                                <div class="skill-header">
+                                    <span class="skill-name">Pandas</span>
+                                    <span class="skill-level">Expert</span>
+                                </div>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" style="width: 90%"></div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="social-links">
+                        <a href="#" class="social-link">💼</a>
+                        <a href="#" class="social-link">🐙</a>
+                        <a href="#" class="social-link">🔗</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Member 4 -->
+            <div class="member-card">
+                <div class="member-header">
+                    <div class="member-avatar">👩‍🔧</div>
+                    <div class="member-name">Lisa Andara</div>
+                    <div class="member-role">DevOps Engineer</div>
+                </div>
+                <div class="member-body">
+                    <div class="skill-category">
+                        <div class="category-title">DevOps</div>
+                        <ul class="skills-list">
+                            <li class="skill-item">
+                                <div class="skill-header">
+                                    <span class="skill-name">Docker</span>
+                                    <span class="skill-level">Expert</span>
+                                </div>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" style="width: 93%"></div>
+                                </div>
+                            </li>
+                            <li class="skill-item">
+                                <div class="skill-header">
+                                    <span class="skill-name">Kubernetes</span>
+                                    <span class="skill-level">Advanced</span>
+                                </div>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" style="width: 88%"></div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="skill-category">
+                        <div class="category-title">Cloud</div>
+                        <ul class="skills-list">
+                            <li class="skill-item">
+                                <div class="skill-header">
+                                    <span class="skill-name">AWS</span>
+                                    <span class="skill-level">Advanced</span>
+                                </div>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" style="width: 87%"></div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="social-links">
+                        <a href="#" class="social-link">💼</a>
+                        <a href="#" class="social-link">🐙</a>
+                        <a href="#" class="social-link">🔗</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Member 5 -->
+            <div class="member-card">
+                <div class="member-header">
+                    <div class="member-avatar">👨‍💻</div>
+                    <div class="member-name">Budi Santoso</div>
+                    <div class="member-role">Security Engineer</div>
+                </div>
+                <div class="member-body">
+                    <div class="skill-category">
+                        <div class="category-title">Security</div>
+                        <ul class="skills-list">
+                            <li class="skill-item">
+                                <div class="skill-header">
+                                    <span class="skill-name">Penetration Testing</span>
+                                    <span class="skill-level">Expert</span>
+                                </div>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" style="width: 92%"></div>
+                                </div>
+                            </li>
+                            <li class="skill-item">
+                                <div class="skill-header">
+                                    <span class="skill-name">Cryptography</span>
+                                    <span class="skill-level">Advanced</span>
+                                </div>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" style="width: 86%"></div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="skill-category">
+                        <div class="category-title">Certifications</div>
+                        <ul class="skills-list">
+                            <li class="skill-item">
+                                <div class="skill-header">
+                                    <span class="skill-name">OSCP</span>
+                                    <span class="skill-level">Certified</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="social-links">
+                        <a href="#" class="social-link">💼</a>
+                        <a href="#" class="social-link">🐙</a>
+                        <a href="#" class="social-link">🔗</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Member 6 -->
+            <div class="member-card">
+                <div class="member-header">
+                    <div class="member-avatar">👩‍📊</div>
+                    <div class="member-name">Maya Kusuma</div>
+                    <div class="member-role">Product Manager</div>
+                </div>
+                <div class="member-body">
+                    <div class="skill-category">
+                        <div class="category-title">Product</div>
+                        <ul class="skills-list">
+                            <li class="skill-item">
+                                <div class="skill-header">
+                                    <span class="skill-name">Product Strategy</span>
+                                    <span class="skill-level">Expert</span>
+                                </div>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" style="width: 90%"></div>
+                                </div>
+                            </li>
+                            <li class="skill-item">
+                                <div class="skill-header">
+                                    <span class="skill-name">User Research</span>
+                                    <span class="skill-level">Advanced</span>
+                                </div>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" style="width: 88%"></div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="skill-category">
+                        <div class="category-title">Analytics</div>
+                        <ul class="skills-list">
+                            <li class="skill-item">
+                                <div class="skill-header">
+                                    <span class="skill-name">Data Analysis</span>
+                                    <span class="skill-level">Advanced</span>
+                                </div>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" style="width: 85%"></div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="social-links">
+                        <a href="#" class="social-link">💼</a>
+                        <a href="#" class="social-link">🐙</a>
+                        <a href="#" class="social-link">🔗</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Cicada Organization. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.querySelector('.hamburger').addEventListener('click', function() {
+            const nav = document.querySelector('.nav-links');
+            nav.style.display = nav.style.display === 'flex' ? 'none' : 'flex';
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tentang Kami - Cicada Organization</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0a0e27;
+            --secondary: #1a1f3a;
+            --accent: #00d4ff;
+            --accent-alt: #ff006e;
+            --text: #e0e0e0;
+            --text-dark: #a0a0a0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--primary);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(10, 14, 39, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(0, 212, 255, 0.1);
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, var(--accent), var(--accent-alt));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        .nav-links a.active {
+            color: var(--accent);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: var(--accent);
+            margin: 5px 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-top: 100px;
+            margin-bottom: 3rem;
+        }
+
+        .page-header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--accent), var(--accent-alt));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .about-text h2 {
+            color: var(--accent);
+            margin-bottom: 1rem;
+            font-size: 1.8rem;
+        }
+
+        .about-text p {
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+            line-height: 1.8;
+        }
+
+        .about-image {
+            background: linear-gradient(135deg, var(--secondary), rgba(0, 212, 255, 0.1));
+            border-radius: 10px;
+            min-height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5rem;
+            border: 2px solid rgba(0, 212, 255, 0.2);
+        }
+
+        .mission-vision {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .card {
+            background: var(--secondary);
+            padding: 2rem;
+            border-radius: 10px;
+            border-left: 4px solid var(--accent);
+        }
+
+        .card h3 {
+            color: var(--accent);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .values {
+            margin-top: 3rem;
+        }
+
+        .values h2 {
+            color: var(--accent);
+            margin-bottom: 2rem;
+            text-align: center;
+            font-size: 2rem;
+        }
+
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .value-item {
+            background: var(--secondary);
+            padding: 2rem;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            transition: all 0.3s;
+        }
+
+        .value-item:hover {
+            border-color: var(--accent);
+            transform: translateY(-5px);
+        }
+
+        .value-item .icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .value-item h4 {
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        footer {
+            background: var(--secondary);
+            padding: 3rem 2rem;
+            border-top: 1px solid rgba(0, 212, 255, 0.1);
+            margin-top: 3rem;
+            text-align: center;
+            color: var(--text-dark);
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .about-content, .mission-vision {
+                grid-template-columns: 1fr;
+            }
+
+            .page-header h1 {
+                font-size: 2rem;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <a href="../index.html" class="logo">🦗 CICADA</a>
+        <ul class="nav-links">
+            <li><a href="../index.html">Beranda</a></li>
+            <li><a href="about.html" class="active">Tentang</a></li>
+            <li><a href="service.html">Layanan</a></li>
+            <li><a href="blog.html">Berita</a></li>
+            <li><a href="tools.html">Tools</a></li>
+            <li><a href="guide.html">Panduan</a></li>
+            <li><a href="project.html">Proyek</a></li>
+            <li><a href="skill.html">Skill</a></li>
+            <li><a href="contact.html">Kontak</a></li>
+        </ul>
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>Tentang Cicada</h1>
+            <p>Memahami visi dan misi kami</p>
+        </div>
+
+        <!-- About Content -->
+        <section class="about-content">
+            <div class="about-text">
+                <h2>Siapa Kami?</h2>
+                <p>Cicada Organization adalah organisasi yang berdedikasi untuk menghadirkan inovasi teknologi terdepan. Kami percaya bahwa teknologi harus dapat diakses oleh semua orang dan membuat perbedaan positif dalam kehidupan sehari-hari.</p>
+                <p>Dengan tim yang terdiri dari para ahli di bidangnya masing-masing, kami berkomitmen untuk menciptakan solusi yang tidak hanya canggih tetapi juga mudah digunakan.</p>
+                <p>Sejak didirikan, kami telah membantu ribuan pengguna mencapai tujuan mereka melalui tools dan layanan berkualitas tinggi.</p>
+            </div>
+            <div class="about-image">
+                🌐
+            </div>
+        </section>
+
+        <!-- Mission & Vision -->
+        <section class="mission-vision">
+            <div class="card">
+                <h3>🎯 Misi Kami</h3>
+                <p>Memberikan solusi teknologi yang inovatif, terpercaya, dan terjangkau untuk memberdayakan individu dan organisasi dalam mencapai potensi penuh mereka.</p>
+            </div>
+            <div class="card">
+                <h3>🔮 Visi Kami</h3>
+                <p>Menjadi organisasi teknologi terdepan yang dikenal karena inovasi, integritas, dan dampak positif terhadap masyarakat global.</p>
+            </div>
+        </section>
+
+        <!-- Values -->
+        <section class="values">
+            <h2>Nilai-Nilai Kami</h2>
+            <div class="values-grid">
+                <div class="value-item">
+                    <div class="icon">💡</div>
+                    <h4>Inovasi</h4>
+                    <p>Kami terus berinovasi dan mencari cara baru untuk memecahkan masalah.</p>
+                </div>
+                <div class="value-item">
+                    <div class="icon">🤝</div>
+                    <h4>Kolaborasi</h4>
+                    <p>Bekerja bersama tim yang solid untuk mencapai hasil terbaik.</p>
+                </div>
+                <div class="value-item">
+                    <div class="icon">✨</div>
+                    <h4>Keunggulan</h4>
+                    <p>Memberikan standar tertinggi dalam setiap aspek pekerjaan kami.</p>
+                </div>
+                <div class="value-item">
+                    <div class="icon">🔒</div>
+                    <h4>Integritas</h4>
+                    <p>Menjunjung tinggi nilai-nilai etika dalam setiap keputusan.</p>
+                </div>
+                <div class="value-item">
+                    <div class="icon">🌍</div>
+                    <h4>Keberlanjutan</h4>
+                    <p>Mengembangkan solusi yang berkelanjutan untuk masa depan.</p>
+                </div>
+                <div class="value-item">
+                    <div class="icon">📈</div>
+                    <h4>Pertumbuhan</h4>
+                    <p>Mendorong pembelajaran dan pengembangan berkelanjutan.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Cicada Organization. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.querySelector('.hamburger').addEventListener('click', function() {
+            const nav = document.querySelector('.nav-links');
+            nav.style.display = nav.style.display === 'flex' ? 'none' : 'flex';
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tools - Cicada Organization</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0a0e27;
+            --secondary: #1a1f3a;
+            --accent: #00d4ff;
+            --accent-alt: #ff006e;
+            --text: #e0e0e0;
+            --text-dark: #a0a0a0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--primary);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(10, 14, 39, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(0, 212, 255, 0.1);
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, var(--accent), var(--accent-alt));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        .nav-links a.active {
+            color: var(--accent);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: var(--accent);
+            margin: 5px 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-top: 100px;
+            margin-bottom: 3rem;
+        }
+
+        .page-header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--accent), var(--accent-alt));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .tool-card {
+            background: var(--secondary);
+            padding: 2rem;
+            border-radius: 10px;
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .tool-card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 20px 40px rgba(0, 212, 255, 0.2);
+            transform: translateY(-10px);
+        }
+
+        .tool-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .tool-card h3 {
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+            font-size: 1.3rem;
+        }
+
+        .tool-version {
+            color: var(--text-dark);
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+        }
+
+        .tool-description {
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+            flex-grow: 1;
+        }
+
+        .tool-features {
+            list-style: none;
+            margin-bottom: 1rem;
+        }
+
+        .tool-features li {
+            padding: 0.3rem 0;
+            color: var(--text-dark);
+            font-size: 0.9rem;
+            padding-left: 1.2rem;
+            position: relative;
+        }
+
+        .tool-features li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+        }
+
+        .tool-stats {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(0, 212, 255, 0.1);
+        }
+
+        .stat {
+            flex: 1;
+            text-align: center;
+        }
+
+        .stat-number {
+            color: var(--accent);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .stat-label {
+            color: var(--text-dark);
+            font-size: 0.75rem;
+        }
+
+        .tool-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: var(--primary);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 212, 255, 0.3);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--accent);
+            border: 1px solid var(--accent);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(0, 212, 255, 0.1);
+        }
+
+        .category-filter {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 0.75rem 1.5rem;
+            background: transparent;
+            color: var(--accent);
+            border: 1px solid var(--accent);
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: var(--accent);
+            color: var(--primary);
+        }
+
+        footer {
+            background: var(--secondary);
+            padding: 3rem 2rem;
+            border-top: 1px solid rgba(0, 212, 255, 0.1);
+            margin-top: 3rem;
+            text-align: center;
+            color: var(--text-dark);
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .page-header h1 {
+                font-size: 2rem;
+            }
+
+            .tool-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <a href="../index.html" class="logo">🦗 CICADA</a>
+        <ul class="nav-links">
+            <li><a href="../index.html">Beranda</a></li>
+            <li><a href="about.html">Tentang</a></li>
+            <li><a href="service.html">Layanan</a></li>
+            <li><a href="blog.html">Berita</a></li>
+            <li><a href="tools.html" class="active">Tools</a></li>
+            <li><a href="guide.html">Panduan</a></li>
+            <li><a href="project.html">Proyek</a></li>
+            <li><a href="skill.html">Skill</a></li>
+            <li><a href="contact.html">Kontak</a></li>
+        </ul>
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>Cicada Tools</h1>
+            <p>Koleksi tools profesional untuk meningkatkan produktivitas Anda</p>
+        </div>
+
+        <!-- Category Filter -->
+        <div class="category-filter">
+            <button class="filter-btn active" onclick="filterTools('all')">Semua</button>
+            <button class="filter-btn" onclick="filterTools('productivity')">Produktivitas</button>
+            <button class="filter-btn" onclick="filterTools('development')">Development</button>
+            <button class="filter-btn" onclick="filterTools('security')">Security</button>
+        </div>
+
+        <!-- Tools Grid -->
+        <section class="tools-grid" id="toolsGrid">
+            <div class="tool-card" data-category="productivity">
+                <div class="tool-icon">📋</div>
+                <h3>TaskFlow Pro</h3>
+                <div class="tool-version">v2.5.0</div>
+                <p class="tool-description">Aplikasi manajemen tugas yang powerful dengan kolaborasi real-time dan tracking otomatis.</p>
+                <ul class="tool-features">
+                    <li>Real-time collaboration</li>
+                    <li>Automated tracking</li>
+                    <li>Team analytics</li>
+                </ul>
+                <div class="tool-stats">
+                    <div class="stat">
+                        <div class="stat-number">50K+</div>
+                        <div class="stat-label">Users</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">4.8★</div>
+                        <div class="stat-label">Rating</div>
+                    </div>
+                </div>
+                <div class="tool-buttons">
+                    <a href="#" class="btn btn-primary">Download</a>
+                    <a href="#" class="btn btn-secondary">Docs</a>
+                </div>
+            </div>
+
+            <div class="tool-card" data-category="development">
+                <div class="tool-icon">💻</div>
+                <h3>CodeBase</h3>
+                <div class="tool-version">v3.1.2</div>
+                <p class="tool-description">IDE ringan dan cepat dengan dukungan 50+ bahasa pemrograman dan integrasi Git.</p>
+                <ul class="tool-features">
+                    <li>50+ language support</li>
+                    <li>Git integration</li>
+                    <li>Debug tools</li>
+                </ul>
+                <div class="tool-stats">
+                    <div class="stat">
+                        <div class="stat-number">100K+</div>
+                        <div class="stat-label">Users</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">4.9★</div>
+                        <div class="stat-label">Rating</div>
+                    </div>
+                </div>
+                <div class="tool-buttons">
+                    <a href="#" class="btn btn-primary">Download</a>
+                    <a href="#" class="btn btn-secondary">Docs</a>
+                </div>
+            </div>
+
+            <div class="tool-card" data-category="security">
+                <div class="tool-icon">🔐</div>
+                <h3>SecureVault</h3>
+                <div class="tool-version">v1.8.5</div>
+                <p class="tool-description">Password manager enterprise dengan enkripsi end-to-end dan audit trail lengkap.</p>
+                <ul class="tool-features">
+                    <li>End-to-end encryption</li>
+                    <li>Audit trail</li>
+                    <li>2FA support</li>
+                </ul>
+                <div class="tool-stats">
+                    <div class="stat">
+                        <div class="stat-number">30K+</div>
+                        <div class="stat-label">Users</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">4.7★</div>
+                        <div class="stat-label">Rating</div>
+                    </div>
+                </div>
+                <div class="tool-buttons">
+                    <a href="#" class="btn btn-primary">Download</a>
+                    <a href="#" class="btn btn-secondary">Docs</a>
+                </div>
+            </div>
+
+            <div class="tool-card" data-category="productivity">
+                <div class="tool-icon">📊</div>
+                <h3>DataViz Studio</h3>
+                <div class="tool-version">v2.3.1</div>
+                <p class="tool-description">Tools visualisasi data interaktif untuk membuat dashboard dan report profesional.</p>
+                <ul class="tool-features">
+                    <li>Interactive charts</li>
+                    <li>Custom templates</li>
+                    <li>Export multi-format</li>
+                </ul>
+                <div class="tool-stats">
+                    <div class="stat">
+                        <div class="stat-number">40K+</div>
+                        <div class="stat-label">Users</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">4.6★</div>
+                        <div class="stat-label">Rating</div>
+                    </div>
+                </div>
+                <div class="tool-buttons">
+                    <a href="#" class="btn btn-primary">Download</a>
+                    <a href="#" class="btn btn-secondary">Docs</a>
+                </div>
+            </div>
+
+            <div class="tool-card" data-category="development">
+                <div class="tool-icon">🚀</div>
+                <h3>DeployHub</h3>
+                <div class="tool-version">v1.5.3</div>
+                <p class="tool-description">Platform deployment otomatis dengan CI/CD pipeline terintegrasi dan monitoring real-time.</p>
+                <ul class="tool-features">
+                    <li>Auto deployment</li>
+                    <li>CI/CD pipeline</li>
+                    <li>Real-time monitoring</li>
+                </ul>
+                <div class="tool-stats">
+                    <div class="stat">
+                        <div class="stat-number">25K+</div>
+                        <div class="stat-label">Users</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">4.8★</div>
+                        <div class="stat-label">Rating</div>
+                    </div>
+                </div>
+                <div class="tool-buttons">
+                    <a href="#" class="btn btn-primary">Download</a>
+                    <a href="#" class="btn btn-secondary">Docs</a>
+                </div>
+            </div>
+
+            <div class="tool-card" data-category="security">
+                <div class="tool-icon">🛡️</div>
+                <h3>ThreatDetect AI</h3>
+                <div class="tool-version">v2.0.0</div>
+                <p class="tool-description">Sistem deteksi ancaman berbasis AI dengan machine learning untuk keamanan siber maksimal.</p>
+                <ul class="tool-features">
+                    <li>AI detection</li>
+                    <li>ML-based analysis</li>
+                    <li>Alert system</li>
+                </ul>
+                <div class="tool-stats">
+                    <div class="stat">
+                        <div class="stat-number">15K+</div>
+                        <div class="stat-label">Users</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">4.9★</div>
+                        <div class="stat-label">Rating</div>
+                    </div>
+                </div>
+                <div class="tool-buttons">
+                    <a href="#" class="btn btn-primary">Download</a>
+                    <a href="#" class="btn btn-secondary">Docs</a>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Cicada Organization. All rights reserved.</p>
+    </footer>
+
+    <script>
+        function filterTools(category) {
+            const cards = document.querySelectorAll('.tool-card');
+            const buttons = document.querySelectorAll('.filter-btn');
+
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            cards.forEach(card => {
+                if (category === 'all' || card.dataset.category === category) {
+                    card.style.display = '';
+                    setTimeout(() => card.style.opacity = '1', 0);
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        document.querySelector('.hamburger').addEventListener('click', function() {
+            const nav = document.querySelector('.nav-links');
+            nav.style.display = nav.style.display === 'flex' ? 'none' : 'flex';
+        });
+    </script>
+</body>
+</html>

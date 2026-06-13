@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Berita - Cicada Organization</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0a0e27;
+            --secondary: #1a1f3a;
+            --accent: #00d4ff;
+            --accent-alt: #ff006e;
+            --text: #e0e0e0;
+            --text-dark: #a0a0a0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--primary);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(10, 14, 39, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(0, 212, 255, 0.1);
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, var(--accent), var(--accent-alt));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        .nav-links a.active {
+            color: var(--accent);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: var(--accent);
+            margin: 5px 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-top: 100px;
+            margin-bottom: 3rem;
+        }
+
+        .page-header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--accent), var(--accent-alt));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .blog-card {
+            background: var(--secondary);
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .blog-card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 20px 40px rgba(0, 212, 255, 0.2);
+            transform: translateY(-10px);
+        }
+
+        .blog-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(255, 0, 110, 0.2));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            border-bottom: 1px solid rgba(0, 212, 255, 0.2);
+        }
+
+        .blog-content {
+            padding: 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .blog-date {
+            color: var(--accent);
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .blog-card h3 {
+            color: var(--text);
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .blog-excerpt {
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+            flex-grow: 1;
+        }
+
+        .blog-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            color: var(--text-dark);
+        }
+
+        .blog-tag {
+            display: inline-block;
+            background: rgba(0, 212, 255, 0.1);
+            color: var(--accent);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            margin-right: 0.5rem;
+        }
+
+        .read-more {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .read-more:hover {
+            transform: translateX(5px);
+        }
+
+        .filters {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .filter-btn {
+            padding: 0.75rem 1.5rem;
+            background: transparent;
+            color: var(--accent);
+            border: 1px solid var(--accent);
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: var(--accent);
+            color: var(--primary);
+        }
+
+        footer {
+            background: var(--secondary);
+            padding: 3rem 2rem;
+            border-top: 1px solid rgba(0, 212, 255, 0.1);
+            margin-top: 3rem;
+            text-align: center;
+            color: var(--text-dark);
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .page-header h1 {
+                font-size: 2rem;
+            }
+
+            .filters {
+                flex-direction: column;
+            }
+
+            .filter-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <a href="../index.html" class="logo">🦗 CICADA</a>
+        <ul class="nav-links">
+            <li><a href="../index.html">Beranda</a></li>
+            <li><a href="about.html">Tentang</a></li>
+            <li><a href="service.html">Layanan</a></li>
+            <li><a href="blog.html" class="active">Berita</a></li>
+            <li><a href="tools.html">Tools</a></li>
+            <li><a href="guide.html">Panduan</a></li>
+            <li><a href="project.html">Proyek</a></li>
+            <li><a href="skill.html">Skill</a></li>
+            <li><a href="contact.html">Kontak</a></li>
+        </ul>
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>Berita & Artikel</h1>
+            <p>Update terbaru dari Cicada Organization</p>
+        </div>
+
+        <!-- Filters -->
+        <div class="filters">
+            <button class="filter-btn active" onclick="filterBlogs('all')">Semua</button>
+            <button class="filter-btn" onclick="filterBlogs('teknologi')">Teknologi</button>
+            <button class="filter-btn" onclick="filterBlogs('tips')">Tips & Trik</button>
+            <button class="filter-btn" onclick="filterBlogs('update')">Update</button>
+        </div>
+
+        <!-- Blog Grid -->
+        <section class="blog-grid" id="blogGrid">
+            <div class="blog-card" data-category="teknologi">
+                <div class="blog-image">🔬</div>
+                <div class="blog-content">
+                    <div class="blog-date">15 Mei 2024</div>
+                    <h3>Tren AI dan Machine Learning 2024</h3>
+                    <p class="blog-excerpt">Perkembangan terbaru dalam dunia AI menghadirkan peluang baru untuk transformasi digital perusahaan.</p>
+                    <div class="blog-meta">
+                        <div>
+                            <span class="blog-tag">AI</span>
+                            <span class="blog-tag">Teknologi</span>
+                        </div>
+                        <a href="#" class="read-more">Baca →</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="blog-card" data-category="tips">
+                <div class="blog-image">💡</div>
+                <div class="blog-content">
+                    <div class="blog-date">12 Mei 2024</div>
+                    <h3>5 Tips Keamanan Cyber untuk Bisnis</h3>
+                    <p class="blog-excerpt">Pelajari cara melindungi bisnis Anda dari serangan cyber dengan strategi keamanan yang efektif.</p>
+                    <div class="blog-meta">
+                        <div>
+                            <span class="blog-tag">Security</span>
+                            <span class="blog-tag">Tips</span>
+                        </div>
+                        <a href="#" class="read-more">Baca →</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="blog-card" data-category="update">
+                <div class="blog-image">📢</div>
+                <div class="blog-content">
+                    <div class="blog-date">10 Mei 2024</div>
+                    <h3>Peluncuran Tools Terbaru Cicada</h3>
+                    <p class="blog-excerpt">Kami dengan bangga mengumumkan peluncuran suite tools baru yang revolusioner untuk produktivitas maksimal.</p>
+                    <div class="blog-meta">
+                        <div>
+                            <span class="blog-tag">Produk</span>
+                            <span class="blog-tag">Update</span>
+                        </div>
+                        <a href="#" class="read-more">Baca →</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="blog-card" data-category="teknologi">
+                <div class="blog-image">☁️</div>
+                <div class="blog-content">
+                    <div class="blog-date">8 Mei 2024</div>
+                    <h3>Cloud Computing: Masa Depan IT</h3>
+                    <p class="blog-excerpt">Migrasi ke cloud bukan lagi pilihan, tetapi kebutuhan untuk tetap kompetitif di era digital.</p>
+                    <div class="blog-meta">
+                        <div>
+                            <span class="blog-tag">Cloud</span>
+                            <span class="blog-tag">Teknologi</span>
+                        </div>
+                        <a href="#" class="read-more">Baca →</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="blog-card" data-category="tips">
+                <div class="blog-image">🚀</div>
+                <div class="blog-content">
+                    <div class="blog-date">5 Mei 2024</div>
+                    <h3>Cara Maksimalkan Produktivitas Tim</h3>
+                    <p class="blog-excerpt">Strategi praktis untuk meningkatkan kolaborasi dan efisiensi kerja tim Anda secara signifikan.</p>
+                    <div class="blog-meta">
+                        <div>
+                            <span class="blog-tag">Produktivitas</span>
+                            <span class="blog-tag">Tips</span>
+                        </div>
+                        <a href="#" class="read-more">Baca →</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="blog-card" data-category="update">
+                <div class="blog-image">🎉</div>
+                <div class="blog-content">
+                    <div class="blog-date">1 Mei 2024</div>
+                    <h3>Cicada Raih Penghargaan Inovasi</h3>
+                    <p class="blog-excerpt">Kami berbangga menerima penghargaan sebagai organisasi teknologi paling inovatif tahun ini.</p>
+                    <div class="blog-meta">
+                        <div>
+                            <span class="blog-tag">Penghargaan</span>
+                            <span class="blog-tag">Update</span>
+                        </div>
+                        <a href="#" class="read-more">Baca →</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Cicada Organization. All rights reserved.</p>
+    </footer>
+
+    <script>
+        function filterBlogs(category) {
+            const cards = document.querySelectorAll('.blog-card');
+            const buttons = document.querySelectorAll('.filter-btn');
+
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            cards.forEach(card => {
+                if (category === 'all' || card.dataset.category === category) {
+                    card.style.display = '';
+                    setTimeout(() => card.style.opacity = '1', 0);
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        document.querySelector('.hamburger').addEventListener('click', function() {
+            const nav = document.querySelector('.nav-links');
+            nav.style.display = nav.style.display === 'flex' ? 'none' : 'flex';
+        });
+    </script>
+</body>
+</html>

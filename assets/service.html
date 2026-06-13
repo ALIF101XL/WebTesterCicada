@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Layanan - Cicada Organization</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0a0e27;
+            --secondary: #1a1f3a;
+            --accent: #00d4ff;
+            --accent-alt: #ff006e;
+            --text: #e0e0e0;
+            --text-dark: #a0a0a0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--primary);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(10, 14, 39, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(0, 212, 255, 0.1);
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, var(--accent), var(--accent-alt));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        .nav-links a.active {
+            color: var(--accent);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: var(--accent);
+            margin: 5px 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-top: 100px;
+            margin-bottom: 3rem;
+        }
+
+        .page-header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--accent), var(--accent-alt));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .service-card {
+            background: var(--secondary);
+            padding: 2rem;
+            border-radius: 10px;
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .service-card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 20px 40px rgba(0, 212, 255, 0.2);
+            transform: translateY(-10px);
+        }
+
+        .service-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .service-card h3 {
+            color: var(--accent);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .service-card p {
+            color: var(--text-dark);
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        .features-list {
+            list-style: none;
+            margin-bottom: 1rem;
+        }
+
+        .features-list li {
+            padding: 0.5rem 0;
+            color: var(--text-dark);
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .features-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        .pricing-section {
+            margin-top: 4rem;
+        }
+
+        .pricing-section h2 {
+            text-align: center;
+            color: var(--accent);
+            margin-bottom: 3rem;
+            font-size: 2rem;
+        }
+
+        .pricing-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .pricing-card {
+            background: var(--secondary);
+            padding: 2rem;
+            border-radius: 10px;
+            border: 2px solid rgba(0, 212, 255, 0.2);
+            text-align: center;
+            position: relative;
+        }
+
+        .pricing-card.featured {
+            border-color: var(--accent);
+            transform: scale(1.05);
+        }
+
+        .pricing-card h3 {
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        .price {
+            font-size: 2.5rem;
+            color: var(--accent);
+            margin: 1rem 0;
+            font-weight: bold;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            background: var(--accent);
+            color: var(--primary);
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 1rem;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 212, 255, 0.3);
+        }
+
+        footer {
+            background: var(--secondary);
+            padding: 3rem 2rem;
+            border-top: 1px solid rgba(0, 212, 255, 0.1);
+            margin-top: 3rem;
+            text-align: center;
+            color: var(--text-dark);
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .pricing-card.featured {
+                transform: scale(1);
+            }
+
+            .page-header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <a href="../index.html" class="logo">🦗 CICADA</a>
+        <ul class="nav-links">
+            <li><a href="../index.html">Beranda</a></li>
+            <li><a href="about.html">Tentang</a></li>
+            <li><a href="service.html" class="active">Layanan</a></li>
+            <li><a href="blog.html">Berita</a></li>
+            <li><a href="tools.html">Tools</a></li>
+            <li><a href="guide.html">Panduan</a></li>
+            <li><a href="project.html">Proyek</a></li>
+            <li><a href="skill.html">Skill</a></li>
+            <li><a href="contact.html">Kontak</a></li>
+        </ul>
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>Layanan Kami</h1>
+            <p>Solusi teknologi terpadu untuk kebutuhan bisnis Anda</p>
+        </div>
+
+        <!-- Services -->
+        <section class="services-grid">
+            <div class="service-card">
+                <div class="service-icon">💻</div>
+                <h3>Konsultasi IT</h3>
+                <p>Layanan konsultasi teknologi informasi untuk mengoptimalkan infrastruktur bisnis Anda.</p>
+                <ul class="features-list">
+                    <li>Audit sistem IT</li>
+                    <li>Rekomendasi solusi</li>
+                    <li>Implementasi teknologi</li>
+                </ul>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">🛡️</div>
+                <h3>Keamanan Siber</h3>
+                <p>Proteksi komprehensif untuk melindungi data dan sistem Anda dari ancaman cyber.</p>
+                <ul class="features-list">
+                    <li>Penetration testing</li>
+                    <li>Security monitoring</li>
+                    <li>Incident response</li>
+                </ul>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">☁️</div>
+                <h3>Cloud Solutions</h3>
+                <p>Solusi cloud terpercaya untuk skalabilitas dan efisiensi operasional maksimal.</p>
+                <ul class="features-list">
+                    <li>Cloud migration</li>
+                    <li>Infrastructure setup</li>
+                    <li>24/7 monitoring</li>
+                </ul>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">📊</div>
+                <h3>Data Analytics</h3>
+                <p>Analisis data mendalam untuk mengambil keputusan bisnis yang lebih baik.</p>
+                <ul class="features-list">
+                    <li>Data warehousing</li>
+                    <li>Business intelligence</li>
+                    <li>Predictive analytics</li>
+                </ul>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">🎨</div>
+                <h3>Desain & Development</h3>
+                <p>Pengembangan aplikasi dan desain UI/UX berkualitas tinggi untuk produk digital Anda.</p>
+                <ul class="features-list">
+                    <li>Web development</li>
+                    <li>Mobile apps</li>
+                    <li>UI/UX design</li>
+                </ul>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">🤖</div>
+                <h3>AI & Machine Learning</h3>
+                <p>Solusi AI dan machine learning untuk otomasi dan optimasi proses bisnis.</p>
+                <ul class="features-list">
+                    <li>Custom AI models</li>
+                    <li>NLP solutions</li>
+                    <li>Computer vision</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Pricing -->
+        <section class="pricing-section">
+            <h2>Paket Harga</h2>
+            <div class="pricing-cards">
+                <div class="pricing-card">
+                    <h3>Starter</h3>
+                    <p>Untuk bisnis kecil</p>
+                    <div class="price">$299</div>
+                    <p style="color: var(--text-dark); margin-bottom: 1rem;">/bulan</p>
+                    <ul class="features-list">
+                        <li>Konsultasi awal</li>
+                        <li>Support email</li>
+                        <li>1 project</li>
+                    </ul>
+                    <button class="btn">Mulai</button>
+                </div>
+
+                <div class="pricing-card featured">
+                    <h3>Professional</h3>
+                    <p>Paling populer</p>
+                    <div class="price">$799</div>
+                    <p style="color: var(--text-dark); margin-bottom: 1rem;">/bulan</p>
+                    <ul class="features-list">
+                        <li>Konsultasi unlimited</li>
+                        <li>Priority support</li>
+                        <li>5 projects</li>
+                    </ul>
+                    <button class="btn">Mulai</button>
+                </div>
+
+                <div class="pricing-card">
+                    <h3>Enterprise</h3>
+                    <p>Untuk organisasi besar</p>
+                    <div class="price">Custom</div>
+                    <p style="color: var(--text-dark); margin-bottom: 1rem;">/bulan</p>
+                    <ul class="features-list">
+                        <li>Solusi custom</li>
+                        <li>Dedicated team</li>
+                        <li>24/7 support</li>
+                    </ul>
+                    <button class="btn">Hubungi Kami</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Cicada Organization. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.querySelector('.hamburger').addEventListener('click', function() {
+            const nav = document.querySelector('.nav-links');
+            nav.style.display = nav.style.display === 'flex' ? 'none' : 'flex';
+        });
+    </script>
+</body>
+</html>
